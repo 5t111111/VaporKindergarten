@@ -10,9 +10,11 @@ public func routes(_ router: Router) throws {
         return "Hello, world!"
     }
 
-    // Example of configuring a controller
-    let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    let articleController = ArticleController()
+    router.get("articles", use: articleController.index)
+    router.post("articles", use: articleController.create)
+//    router.get("articles", "new", use: articleController.new)
+//    router.get("users", Int.parameter, use: articleController.show)
+//    router.get("users", "edit", Int.parameter, use: articleController.edit)
+//    router.post("users", Int.parameter, use: articleController.update)
 }

@@ -14,6 +14,8 @@ public func configure(
     try services.register(LeafProvider())
     try services.register(FluentMySQLProvider())
 
+    config.prefer(LeafRenderer.self, for: TemplateRenderer.self)
+
     /// Register routes to the router
     let router = EngineRouter.default()
     try routes(router)
@@ -43,6 +45,6 @@ public func configure(
 
     /// Configure migrations
     var migrations = MigrationConfig()
-    migrations.add(model: Todo.self, database: .mysql)
+    migrations.add(model: Article.self, database: .mysql)
     services.register(migrations)
 }
