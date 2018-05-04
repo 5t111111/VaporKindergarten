@@ -1,7 +1,12 @@
 import Vapor
+import Crypto
 
 final class ArticleController {
     func index(_ req: Request) throws -> Future<View> {
+        guard let _ = getUserEmail(req) else {
+            throw Abort(.unauthorized)
+        }
+
         let allArticles = Article.query(on: req).all()
         return allArticles.flatMap(to: View.self) { articles in
             let data = ["articles": articles]

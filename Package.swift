@@ -11,10 +11,13 @@ let package = Package(
         .package(url: "https://github.com/vapor/leaf.git", from: "3.0.0-rc.2"),
 
         // 🖋🐬 Swift ORM (queries, models, relations, etc) built on MySQL.
-        .package(url: "https://github.com/vapor/fluent-mysql.git", from: "3.0.0-rc.2")
+        .package(url: "https://github.com/vapor/fluent-mysql.git", from: "3.0.0-rc.2"),
+
+        // Crypto
+        .package(url: "https://github.com/vapor/crypto.git", from: "3.1.1")
     ],
     targets: [
-        .target(name: "App", dependencies: ["Vapor", "Leaf", "FluentMySQL"]),
+        .target(name: "App", dependencies: ["Vapor", "Leaf", "FluentMySQL", "Crypto"]),
         .target(name: "Run", dependencies: ["App"]),
         .testTarget(name: "AppTests", dependencies: ["App"])
     ]

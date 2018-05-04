@@ -1,6 +1,7 @@
 import Vapor
 import Leaf
 import FluentMySQL
+import Authentication
 
 /// Called before your application initializes.
 ///
@@ -46,5 +47,11 @@ public func configure(
     /// Configure migrations
     var migrations = MigrationConfig()
     migrations.add(model: Article.self, database: .mysql)
+    migrations.add(model: User.self, database: .mysql)
     services.register(migrations)
+
+    var middlewareConfig = MiddlewareConfig.default()
+    middlewareConfig.use(SessionsMiddleware.self)
+    services.register(middlewareConfig)
+    config.prefer(MemoryKeyedCache.self, for: KeyedCache.self)
 }
