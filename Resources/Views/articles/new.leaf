@@ -1,0 +1,36 @@
+#set("title") {New Article}
+
+#set("body") {
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">New Article</h5>
+        <form action="/articles" method="post">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="title" class="form-control" id="title" />
+          </div>
+          <div class="form-group">
+            <label for="overview">Overview</label>
+            <textarea name="overview" class="form-control" id="overview" rows="5"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" name="url" class="form-control" id="url" />
+          </div>
+          <div class="form-group">
+            <label for="targetVersion">Target Version</label>
+            <input type="text" name="targetVersion" class="form-control" id="targetVersion" />
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-block btn-primary" value="Create" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+#embed("base")

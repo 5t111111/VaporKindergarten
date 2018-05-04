@@ -3,7 +3,7 @@ import Crypto
 
 final class ArticleController {
     func index(_ req: Request) throws -> Future<View> {
-        guard let _ = getUserEmail(req) else {
+        guard isLoggedIn(req) else {
             throw Abort(.unauthorized)
         }
 
@@ -12,6 +12,10 @@ final class ArticleController {
             let data = ["articles": articles]
             return try req.view().render("articles/index", data)
         }
+    }
+
+    func new(_ req: Request) throws -> Future<View> {
+        return try req.view().render("articles/new")
     }
 
     func create(_ req: Request) throws -> Future<Article> {
