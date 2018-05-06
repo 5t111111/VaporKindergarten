@@ -3,10 +3,6 @@ import Crypto
 
 final class ArticleController {
     func index(_ req: Request) throws -> Future<View> {
-        guard isLoggedIn(req) else {
-            throw Abort(.unauthorized)
-        }
-
         let allArticles = Article.query(on: req).all()
         return allArticles.flatMap(to: View.self) { articles in
             let data = ["articles": articles]
@@ -14,8 +10,25 @@ final class ArticleController {
         }
     }
 
-    func new(_ req: Request) throws -> Future<View> {
-        return try req.view().render("articles/new")
+    enum ViewOrRedirect: ResponseEncodable {
+        func encode(for req: Request) throws -> Future<Response> {
+            switch self {
+            case .redirect(let path): return Future.map(on: req) { req.redirect(to: path) }
+            case .view(let view): return try view.encode(for: req)
+            }
+        }
+
+        case redirect(String)
+        case view(View)
+    }
+
+    func new(_ req: Request) throws -> Future<ViewOrRedirect> {
+        guard isLoggedIn(req) else {
+            return Future.map(on: req) { .redirect("/sessions/new") }
+        }
+        return try req.view().render("articles/new").map(to: ViewOrRedirect.self) { view in
+            return .view(view)
+        }
     }
 
     func create(_ req: Request) throws -> Future<Article> {

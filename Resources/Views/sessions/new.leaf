@@ -1,12 +1,28 @@
 #set("title") {Log in}
 
 #set("body") {
-<h1>Log in</h1>
-<form action="/sessions" method="post">
-  <p>Email: <input type="text" name="email" /></p>
-  <p>Password: <input type="password" name="password" /></p>
-  <p><input type="submit" class="btn btn-lg btn-primary" /></p>
-</form>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Log in</h5>
+        <form action="/sessions" method="POST">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" id="email" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" id="password" />
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-block btn-primary" value="Create" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 }
 
 #embed("base")
