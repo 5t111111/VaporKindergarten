@@ -1,7 +1,6 @@
 import Vapor
 import Leaf
 import FluentMySQL
-import Authentication
 
 /// Called before your application initializes.
 ///
@@ -15,7 +14,7 @@ public func configure(
     try services.register(LeafProvider())
     try services.register(FluentMySQLProvider())
 
-    config.prefer(LeafRenderer.self, for: TemplateRenderer.self)
+    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
 
     /// Register routes to the router
     let router = EngineRouter.default()
