@@ -10,25 +10,13 @@ final class ArticleController {
         }
     }
 
-    enum ViewOrRedirect: ResponseEncodable {
-        func encode(for req: Request) throws -> Future<Response> {
-            switch self {
-            case .redirect(let path): return Future.map(on: req) { req.redirect(to: path) }
-            case .view(let view): return try view.encode(for: req)
-            }
-        }
-
-        case redirect(String)
-        case view(View)
-    }
-
-    func new(_ req: Request) throws -> Future<ViewOrRedirect> {
+    func new(_ req: Request) throws -> Future<AnyResponse> {
         guard isLoggedIn(req) else {
-            return Future.map(on: req) { .redirect("/sessions/new") }
+            let redirect = req.redirect(to: "/sessions/new")
+            return Future.map(on: req) { AnyResponse(redirect) }
         }
-        return try req.view().render("articles/new").map(to: ViewOrRedirect.self) { view in
-            return .view(view)
-        }
+        let page = try req.view().render("articles/new")
+        return Future.map(on: req) { AnyResponse(page) }
     }
 
     func create(_ req: Request) throws -> Future<Article> {
