@@ -9,16 +9,17 @@ import Crypto
 public func routes(_ router: Router) throws {
     let articleController = ArticleController()
     router.get(use: articleController.index)
-    router.get("articles", use: articleController.index)
-    router.post("articles", use: articleController.create)
-    router.get("articles", "new", use: articleController.new)
-//    router.get("users", Int.parameter, use: articleController.show)
-//    router.get("users", "edit", Int.parameter, use: articleController.edit)
-//    router.post("users", Int.parameter, use: articleController.update)
+    router.group("articles") { group in
+        group.get(use: articleController.index)
+        group.post(use: articleController.create)
+        group.get("new", use: articleController.new)
+    }
 
     let sessionController = SessionController()
-    router.get("sessions", "new", use: sessionController.new)
-    router.post("sessions", use: sessionController.create)
+    router.group("sessions") { group in
+        group.get("sessions", "new", use: sessionController.new)
+        group.post("sessions", use: sessionController.create)
+    }
 }
 
 func isLoggedIn(_ req: Request) -> Bool {
