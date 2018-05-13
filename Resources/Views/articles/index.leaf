@@ -3,29 +3,23 @@
 #set("body") {
 <div class="row">
   <div class="col-md-12">
-    <h1>Article Index</h1>
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Title</th>
-        <th scope="col">Overview</th>
-        <th scope="col">URL</th>
-        <th scope="col">Target Version</th>
-      </tr>
-      </thead>
-      <tbody>
-      #for(article in articles) {
-      <tr>
-        <th scope="row">#(article.id)</th>
-        <td scope="row"><a href="/articles/#(article.id)">#(article.title)</a></td>
-        <td scope="row">#(article.overview)</td>
-        <td scope="row"><a href="#(article.url)">Link</a></td>
-        <td scope="row">#(article.targetVersion)</td>
-      </tr>
-      }
-      </tbody>
-    </table>
+    #for(article in articles) {
+      <div style="margin-top: 1.5rem;">
+        <a href="#(article.url)" target="_blank" style="color: rgb(119, 119, 119); text-decoration: none;">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="color: rgb(51, 51, 51); font-weight: bold;">#(article.title)</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                <img src="/vapor-3.png" style="width: 1em; vertical-align: bottom;"/>
+                <span>#(article.targetVersion)</span>
+              </h6>
+              <p class="card-text" style="color: rgb(51, 51, 51); margin-top: 1rem;">#(article.overview)</p>
+              <p class="card-text text-muted" style="font-size: .9em;">Category: #(article.category)</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    }
   </div>
 </div>
 }
