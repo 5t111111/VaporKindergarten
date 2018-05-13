@@ -29,5 +29,5 @@ func isLoggedIn(_ req: Request) -> Bool {
 
 func getUserEmail(_ req: Request) -> String? {
     let session = try? req.session()
-    return session?["email"]
+    return session?["user_id"]
 }
