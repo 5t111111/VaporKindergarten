@@ -1,24 +1,25 @@
+import Foundation
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 
-final class Article: MySQLModel {
-    var id: Int?
+final class Article: Codable {
+    var id: UUID?
     var title: String
     var overview: String
     var url: String
+    var category: String
     var targetVersion: String
 
-    init(id: Int? = nil, title: String, overview: String, url: String, targetVersion: String) {
-        self.id = id
+    init(title: String, overview: String, url: String, category: String, targetVersion: String) {
         self.title = title
         self.overview = overview
         self.url = url
+        self.category = category
         self.targetVersion = targetVersion
     }
 }
 
-extension Article: Migration { }
-
-extension Article: Content { }
-
-extension Article: Parameter { }
+extension Article: PostgreSQLUUIDModel {}
+extension Article: Content {}
+extension Article: Migration {}
+extension Article: Parameter {}

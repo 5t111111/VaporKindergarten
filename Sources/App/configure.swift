@@ -1,6 +1,6 @@
 import Vapor
 import Leaf
-import FluentMySQL
+import FluentPostgreSQL
 
 /// Called before your application initializes.
 ///
@@ -12,9 +12,7 @@ public func configure(
 ) throws {
     /// Register providers first
     try services.register(LeafProvider())
-    try services.register(FluentMySQLProvider())
-
-    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
+    try services.register(FluentPostgreSQLProvider())
 
     /// Register routes to the router
     let router = EngineRouter.default()
@@ -23,34 +21,47 @@ public func configure(
 
     /// Register middleware
     var middlewares = MiddlewareConfig() // Create _empty_ middleware config
-    /// middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
-    middlewares.use(DateMiddleware.self) // Adds `Date` header to responses
+    middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
     services.register(middlewares)
 
-    // Configure a MySQL database
-    let mySQLDatabaseConfig = MySQLDatabaseConfig(
-        hostname: "127.0.0.1",
-        port: 3306,
-        username: "vapor_kindergarten",
-        password: "vapor_kindergarten",
-        database: "vapor_kindergarten"
-    )
-    let mysql = MySQLDatabase(config: mySQLDatabaseConfig)
-
-    /// Register the configured MySQL database to the database config.
+    // Configure a PostgreSQL database
     var databases = DatabasesConfig()
-    databases.add(database: mysql, as: .mysql)
+    let databaseConfig: PostgreSQLDatabaseConfig
+    if let url = Environment.get("DATABASE_URL") {
+        databaseConfig = try PostgreSQLDatabaseConfig(url: url)
+    } else {
+        let databaseName: String
+        let databasePort: Int
+        databaseName = Environment.get("DATABASE_DB") ?? "vapor_kindergarten"
+        databasePort = 5432
+        let hostname = Environment.get("DATABASE_HOSTNAME") ?? "localhost"
+        let username = Environment.get("DATABASE_USER") ?? "vapor_kindergarten"
+        let password = Environment.get("DATABASE_PASSWORD") // Optional
+        databaseConfig = PostgreSQLDatabaseConfig(
+            hostname: hostname,
+            port: databasePort,
+            username: username,
+            database: databaseName,
+            password: password
+        )
+
+        print(databaseConfig)
+    }
+    let database = PostgreSQLDatabase(config: databaseConfig)
+    databases.add(database: database, as: .psql)
     services.register(databases)
 
     /// Configure migrations
     var migrations = MigrationConfig()
-    migrations.add(model: Article.self, database: .mysql)
-    migrations.add(model: User.self, database: .mysql)
+    migrations.add(model: Article.self, database: .psql)
+    migrations.add(model: User.self, database: .psql)
     services.register(migrations)
 
     var middlewareConfig = MiddlewareConfig.default()
     middlewareConfig.use(SessionsMiddleware.self)
     services.register(middlewareConfig)
     config.prefer(MemoryKeyedCache.self, for: KeyedCache.self)
+
+    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
 }

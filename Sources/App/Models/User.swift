@@ -1,18 +1,18 @@
+import Foundation
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 
-final class User: MySQLModel {
-    var id: Int?
+final class User: Codable {
+    var id: UUID?
     var email: String
     var password: String
 
-    init(id: Int? = nil, email: String, password: String) {
-        self.id = id
+    init(email: String, password: String) {
         self.email = email
         self.password = password
     }
 }
 
 extension User: Content {}
-
+extension User: PostgreSQLUUIDModel {}
 extension User: Migration {}
