@@ -22,7 +22,6 @@
         <td scope="row">#(article.overview)</td>
         <td scope="row"><a href="#(article.url)">Link</a></td>
         <td scope="row">#(article.targetVersion)</td>
-        <td scope="row"><a class="btn btn-info" href="/articles/edit/#(article.id)" role="button">Edit</a></td>
       </tr>
       }
       </tbody>

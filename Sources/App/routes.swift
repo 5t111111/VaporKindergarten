@@ -1,3 +1,4 @@
+import Foundation
 import Routing
 import Vapor
 
@@ -9,8 +10,10 @@ public func routes(_ router: Router) throws {
     router.get(use: articleController.index)
     router.group("articles") { group in
         group.get(use: articleController.index)
-        group.post(use: articleController.create)
         group.get("new", use: articleController.new)
+        group.post(use: articleController.create)
+        group.get("edit", UUID.parameter, use: articleController.edit)
+        group.post("update", UUID.parameter, use: articleController.update)
     }
 
     let sessionController = SessionController()

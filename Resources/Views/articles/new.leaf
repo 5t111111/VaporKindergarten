@@ -20,6 +20,10 @@
             <input type="text" name="url" class="form-control" id="url" />
           </div>
           <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" name="category" class="form-control" id="category" />
+          </div>
+          <div class="form-group">
             <label for="targetVersion">Target Version</label>
             <input type="text" name="targetVersion" class="form-control" id="targetVersion" />
           </div>
