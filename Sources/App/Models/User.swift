@@ -1,8 +1,10 @@
 import Foundation
 import Vapor
+import Fluent
 import FluentPostgreSQL
+import Authentication
 
-final class User: Codable {
+struct User: Codable {
     var id: UUID?
     var email: String
     var password: String
@@ -14,5 +16,12 @@ final class User: Codable {
 }
 
 extension User: Content {}
+
 extension User: PostgreSQLUUIDModel {}
+
 extension User: Migration {}
+
+extension User: BasicAuthenticatable {
+    static let usernameKey = \User.email
+    static let passwordKey = \User.password
+}

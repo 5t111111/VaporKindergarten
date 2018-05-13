@@ -1,8 +1,9 @@
 import Foundation
 import Vapor
+import Fluent
 import FluentPostgreSQL
 
-final class Article: Codable {
+struct Article: Codable {
     var id: UUID?
     var title: String
     var overview: String
@@ -20,6 +21,9 @@ final class Article: Codable {
 }
 
 extension Article: PostgreSQLUUIDModel {}
+
 extension Article: Content {}
+
 extension Article: Migration {}
+
 extension Article: Parameter {}
