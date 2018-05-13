@@ -23,6 +23,7 @@ public func configure(
     var middlewares = MiddlewareConfig() // Create _empty_ middleware config
     middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
+    middlewares.use(SessionsMiddleware.self)
     services.register(middlewares)
 
     // Configure a PostgreSQL database
@@ -58,10 +59,6 @@ public func configure(
     migrations.add(model: User.self, database: .psql)
     services.register(migrations)
 
-    var middlewareConfig = MiddlewareConfig.default()
-    middlewareConfig.use(SessionsMiddleware.self)
-    services.register(middlewareConfig)
     config.prefer(MemoryKeyedCache.self, for: KeyedCache.self)
-
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
 }
