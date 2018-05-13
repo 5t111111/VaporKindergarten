@@ -10,6 +10,7 @@ struct Article: Codable {
     var url: String
     var category: String
     var targetVersion: String
+    var createdAt: Date?
 
     init(title: String, overview: String, url: String, category: String, targetVersion: String) {
         self.title = title

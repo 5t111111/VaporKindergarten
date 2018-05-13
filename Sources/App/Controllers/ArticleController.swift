@@ -3,7 +3,7 @@ import Vapor
 
 final class ArticleController {
     func index(_ req: Request) throws -> Future<View> {
-        let allArticles = Article.query(on: req).all()
+        let allArticles = try Article.query(on: req).sort(\Article.createdAt, .descending).all()
         return allArticles.flatMap(to: View.self) { articles in
             let context = ["articles": articles]
             return try req.view().render("articles/index", context)
@@ -24,6 +24,8 @@ final class ArticleController {
             throw Abort(.unauthorized)
         }
         return try req.content.decode(Article.self).flatMap(to: Article.self) { article in
+            var article = article
+            article.createdAt = Date()
             return article.save(on: req)
         }
     }
