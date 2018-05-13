@@ -1,7 +1,5 @@
 import Routing
 import Vapor
-import FluentMySQL
-import Crypto
 
 /// Register your application's routes here.
 ///
