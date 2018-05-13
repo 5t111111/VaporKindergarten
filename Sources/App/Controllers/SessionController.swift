@@ -23,7 +23,7 @@ final class SessionController {
                 let redirect = req.redirect(to: "/articles")
                 return AnyResponse(redirect)
             } else {
-                let context = ["error": true]
+                let context = ["error": "Invalid username or password"]
                 let page = try req.view().render("sessions/new", context)
                 return AnyResponse(page)
             }
