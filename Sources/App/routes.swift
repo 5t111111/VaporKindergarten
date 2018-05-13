@@ -15,8 +15,8 @@ public func routes(_ router: Router) throws {
 
     let sessionController = SessionController()
     router.group("sessions") { group in
-        group.get("sessions", "new", use: sessionController.new)
-        group.post("sessions", use: sessionController.create)
+        group.get("new", use: sessionController.new)
+        group.post(use: sessionController.create)
     }
 }
 
